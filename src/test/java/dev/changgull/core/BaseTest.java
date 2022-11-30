@@ -7,8 +7,8 @@ import org.testng.annotations.Parameters;
 public class BaseTest extends Base {
     @Parameters({"env"})
     @BeforeSuite(alwaysRun = true)
-    public void beforeSuite(@Optional("stage") String envName) {
+    public void beforeSuite(@Optional("stage") String env) {
         loadProperties("default.properties");
-        loadProperties(envName + ".properties");
+        loadProperties(env + ".properties");
     }
 }
