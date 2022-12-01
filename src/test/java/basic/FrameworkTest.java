@@ -16,4 +16,9 @@ public class FrameworkTest extends BaseTest
         getLogger().info(envName);
         Assert.assertTrue(getProperty("environment.name").length() > 0);
     }
+    @Test
+    public void printOsArch() {
+        getLogger().info(System.getProperty("os.name"));
+        getLogger().info(System.getProperty("os.arch"));
+    }
 }
