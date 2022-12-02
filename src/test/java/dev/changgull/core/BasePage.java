@@ -2,8 +2,13 @@ package dev.changgull.core;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+import java.util.Arrays;
 
 public class BasePage<T> extends Base {
     private String _url;
@@ -11,19 +16,13 @@ public class BasePage<T> extends Base {
     private Keys _controlKey;
 
     protected void initChromeDriver() {
-        String driverPath;
-        String osName = System.getProperty("os.name");
-        if (osName.equals("Mac OS X")) {
-            if (System.getProperty("os.arch").equals("aarch64")) {
-                driverPath = "bin/mac_arm64/chromedriver";
-            } else {
-                driverPath = "bin/mac64/chromedriver";
-            }
-        } else if (osName.equals("Linux")) {
-            driverPath = "bin/linux64/chromedriver";
-        } else {
-            Assert.fail("We do not have the web driver for this OS. Refer to README.md");
-        }
+        setDriverPath();
+        ChromeOptions options = new ChromeOptions();
+        String optionsStr = getProperty("chrome.options") + getProperty("browser.options");
+        options.addArguments(Arrays.asList(optionsStr.split("[|]")));
+        getLogger().info("browser options: " + options.toString());
+        setDriver(new ChromeDriver(options));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(Long.valueOf(getProperty("page.implicitTimeoutSec"))));
     }
 
     public T openUrl(String url) {
@@ -42,6 +41,34 @@ public class BasePage<T> extends Base {
         setDriver(page.getDriver());
         PageFactory.initElements(getDriver(), this);
         return (T) this;
+    }
+
+    public void closePage() {
+        getDriver().quit();
+    }
+
+    public WebDriverWait getWait() {
+        return new WebDriverWait(getDriver(), Duration.ofSeconds(Long.valueOf(getProperty("page.implicitTimeoutSec"))));
+    }
+
+    private void setDriverPath() {
+        String osName = System.getProperty("os.name");
+        String driverPath;
+        if (osName.equals("Mac OS X")) {
+            setControlKey(Keys.COMMAND);
+            if (System.getProperty("os.arch").equals("aarch64")) {
+                driverPath = "bin/mac_arm64/chromedriver";
+            } else {
+                driverPath =  "bin/mac64/chromedriver";
+            }
+        } else if (osName.equals("Linux")) {
+            setControlKey(Keys.CONTROL);
+            driverPath =  "bin/linux64/chromedriver";
+        } else {
+            driverPath = "";
+            getLogger().warning("No driver available for " + osName);
+        }
+        System.setProperty("webdriver.chrome.driver", driverPath);
     }
 
     protected void setUrl(String url) {

@@ -1,12 +1,9 @@
-package basic;
+package dev.changgull.basic;
 
 import dev.changgull.core.BaseTest;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 
-/**
- * Unit test for simple App.
- */
 public class FrameworkTest extends BaseTest
 {
     @Test
