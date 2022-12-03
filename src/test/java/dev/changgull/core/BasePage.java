@@ -1,13 +1,19 @@
 package dev.changgull.core;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 
 public class BasePage<T> extends Base {
@@ -69,6 +75,19 @@ public class BasePage<T> extends Base {
             getLogger().warning("No driver available for " + osName);
         }
         System.setProperty("webdriver.chrome.driver", driverPath);
+    }
+
+    public T takeScreenShot() {
+        try {
+            Long timeEpoch = Instant.now().getEpochSecond();
+            String filePath = "target/screenshots/" + getClass().getName() + timeEpoch + ".png";
+            File screenShotFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(screenShotFile, new File(filePath));
+        } catch (IOException e) {
+            getLogger().warning("Failed to save screenshot");
+            e.printStackTrace();
+        }
+        return (T) this;
     }
 
     protected void setUrl(String url) {
