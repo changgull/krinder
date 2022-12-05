@@ -12,4 +12,10 @@ public class BaseTest extends Base {
         loadProperties(env + ".properties");
         getProperties().setProperty("browser.options", browserOptions);
     }
+
+    public void safeClose(BasePage page) {
+        if (page != null && page.getDriver() != null) {
+            page.closePage();
+        }
+    }
 }

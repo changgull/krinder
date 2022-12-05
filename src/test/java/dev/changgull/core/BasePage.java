@@ -1,7 +1,9 @@
 package dev.changgull.core;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
@@ -45,6 +47,10 @@ public class BasePage<T> extends Base {
 
     public void closePage() {
         getDriver().quit();
+    }
+
+    public WebElement findElement(String xpath) {
+        return getDriver().findElement(By.xpath(xpath));
     }
 
     public WebDriverWait getWait() {
