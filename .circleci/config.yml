@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: Download Chromedriver
-          command: sh -c "pwd" && sh downloadChromeDriver.sh linux64
+          command: sh downloadChromeDriver.sh linux64
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
