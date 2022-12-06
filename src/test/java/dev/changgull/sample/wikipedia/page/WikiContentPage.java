@@ -2,8 +2,8 @@ package dev.changgull.sample.wikipedia.page;
 
 import dev.changgull.core.BasePage;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindAll;
+import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 import java.util.List;

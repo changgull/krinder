@@ -1,8 +1,8 @@
 package dev.changgull.basic;
 
 import dev.changgull.core.BaseTest;
-import org.testng.annotations.Test;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 public class FrameworkTest extends BaseTest
 {
