@@ -5,6 +5,9 @@ jobs:
       - image: markhobson/maven-chrome:latest
     steps:
       - checkout
+      - download_webdriver:
+          name: Download Chromedriver
+          command: sh downloadChromeDriver.sh linux64
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
