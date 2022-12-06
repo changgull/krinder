@@ -1,0 +1,18 @@
+version: 2.1
+jobs:
+  build-and-test:
+    docker:
+      - image: markhobson/maven-chrome:latest
+    steps:
+      - checkout
+      - run:
+          name: Build
+          command: mvn -B -DskipTests clean package
+      - run:
+          name: Test
+          command: mvn test -DbrowserOptions=headless
+
+workflows:
+  sample:
+    jobs:
+      - build-and-test
