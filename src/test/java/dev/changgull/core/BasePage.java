@@ -59,30 +59,35 @@ public class BasePage<T> extends Base {
 
     private void setDriverPath() {
         String osName = System.getProperty("os.name");
+        String overridePath = getProperty("chromeDriverPath");
         String driverPath;
         if (osName.equals("Mac OS X")) {
             setControlKey(Keys.COMMAND);
             if (System.getProperty("os.arch").equals("aarch64")) {
                 driverPath = "bin/mac_arm64/chromedriver";
             } else {
-                driverPath =  "bin/mac64/chromedriver";
+                driverPath = "bin/mac64/chromedriver";
             }
         } else if (osName.equals("Linux")) {
             setControlKey(Keys.CONTROL);
-            driverPath =  "bin/linux64/chromedriver";
+            driverPath = "bin/linux64/chromedriver";
         } else {
             driverPath = "";
             getLogger().warning("No driver available for " + osName);
         }
-        System.setProperty("webdriver.chrome.driver", driverPath);
-    }
-
-    protected void setUrl(String url) {
-        _url = url;
+        if (overridePath != null) {
+            System.setProperty("webdriver.chrome.driver", overridePath);
+        } else {
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        }
     }
 
     protected String getUrl() {
         return _url;
+    }
+
+    protected void setUrl(String url) {
+        _url = url;
     }
 
     private void setControlKey(Keys key) {
@@ -93,11 +98,11 @@ public class BasePage<T> extends Base {
         return _controlKey;
     }
 
-    private void setDriver(WebDriver driver) {
-        _driver = driver;
-    }
-
     protected WebDriver getDriver() {
         return _driver;
+    }
+
+    private void setDriver(WebDriver driver) {
+        _driver = driver;
     }
 }

@@ -6,35 +6,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Download Chromedriver
-          command: sh downloadChromeDriver.sh linux64
-      - run:
           name: Build
           command: mvn -B -DskipTests clean package
       - run:
           name: Test
-          command: mvn test -DbrowserOptions=headless
+          command: mvn test -DbrowserOptions=headless -DchromeDriverPath=/usr/bin/chromedriver
       - run:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
             find . -type f -regex ".*/target/surefire-reports/junitreports/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
-      - run:
-          name: Make xml test reports CircleCI compliant
-          command: |
-            apt-get update && sudo apt-get install -y xmlstarlet
-            FILES=`ls ~/test-results/junit/*`
-            for file in $FILES
-            do
-              echo "Processing $file file..."
-              # Remove surefiere and failsafe namespaces
-              xmlstarlet ed --inplace -d '//testsuite/@xsi:noNamespaceSchemaLocation' $file
-              # Add attribute "file" to testcase nodes
-              xmlstarlet ed --inplace -i "//testcase" -t attr -n file -v "" $file
-              # Update attribute "file" based on "testcase" attribute
-              xmlstarlet ed --inplace -u "//testcase/@file" -x "concat(concat('src/test/java/', translate(./../@classname,'.','/')), '.java')" $file
-            done
       - store_artifacts:
           path: ~/test-results
       - store_test_results:
