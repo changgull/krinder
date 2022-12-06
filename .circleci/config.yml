@@ -14,6 +14,8 @@ jobs:
       - run:
           name: Test
           command: mvn test -DbrowserOptions=headless
+      - store_test_results:
+          path: target/surefire-reports/*.xml
 
 workflows:
   sample:
