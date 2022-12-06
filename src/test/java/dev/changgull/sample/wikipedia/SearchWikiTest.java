@@ -9,14 +9,14 @@ import org.testng.annotations.Test;
 public class SearchWikiTest extends BaseTest {
     WikiHomePage page;
     @Test
-    void searchWikipediaTest() {
+    void searchWikipedia() {
         page = new WikiHomePage()
                 .openPage()
                 .verifySearchBoxExists()
                 .search("testng");
     }
 
-    @Test(dependsOnMethods = "searchWikipediaTest")
+    @Test(dependsOnMethods = "searchWikipedia")
     void verifyWikipediaContent() {
         new WikiContentPage()
                 .continueFrom(page)
