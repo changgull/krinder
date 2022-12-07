@@ -7,15 +7,23 @@ import java.util.logging.Logger;
 
 public class Base {
     private static Properties _properties;
-    protected void setProperties(Properties prop) {
-        _properties = prop;
-    }
+
     protected Properties getProperties() {
         return _properties;
     }
+
+    protected void setProperties(Properties prop) {
+        _properties = prop;
+    }
+
+    public void setProperty(String key, String value) {
+        getProperties().setProperty(key, value);
+    }
+
     public String getProperty(String key) {
         return getProperties().getProperty(key);
     }
+
     protected void loadProperties(String fileName) {
         try {
             // file should be located under resources folder
@@ -26,6 +34,7 @@ public class Base {
             e.printStackTrace();
         }
     }
+
     public Logger getLogger() {
         return Logger.getLogger(getClass().getName());
     }

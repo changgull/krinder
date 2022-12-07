@@ -14,8 +14,8 @@ public class BaseTest extends Base {
             , @Optional @Nullable String chromeDriverPath) {
         loadProperties("default.properties");
         loadProperties(env + ".properties");
-        getProperties().setProperty("browser.options", browserOptions);
-        if (chromeDriverPath != null) getProperties().setProperty("chromeDriverPath", chromeDriverPath);
+        setProperty("browser.options", browserOptions);
+        if (chromeDriverPath != null) setProperty("chromeDriverPath", chromeDriverPath);
     }
 
     public void safeClose(BasePage page) {
