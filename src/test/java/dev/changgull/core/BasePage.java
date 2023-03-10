@@ -20,7 +20,7 @@ public class BasePage<T> extends Base {
     protected void initChromeDriver() {
         setDriverPath();
         ChromeOptions options = new ChromeOptions();
-        String optionsStr = getProperty("chrome.options") + getProperty("browser.options");
+        String optionsStr = getProperty("chrome.options") + "|" + getProperty("browser.options");
         options.addArguments(Arrays.asList(optionsStr.split("[|]")));
         getLogger().info("browser options: " + options.toString());
         setDriver(new ChromeDriver(options));
